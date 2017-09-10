@@ -25,9 +25,12 @@ SECRET_KEY = '16ee$j^oo1z^83!8=5+fb^o@*%j-12q_)=f_x+$vt#!y*7*u($'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'devesh.pythonanywhere.com']
-
-
+ALLOWED_HOSTS = ['localhost', 'devesh.pythonanywhere.com']
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_FACEBOOK_KEY = '146297135868348'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'd6f96ee823c6ece1f303df77fc747f21' 
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
 	'blog',
 ]
 
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -63,6 +68,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect', 
             ],
         },
     },
@@ -99,7 +106,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
 
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
